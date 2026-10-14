@@ -1,23 +1,27 @@
-# Week 1 student package
+# Lab 1
 
-Start with HANDOUT.md (or the accompanying Word handout). Local Ollama only;
-no API key, cloud model, or paid API is needed.
+## Commands
 
-- target-service: deliberately defective service and customer acceptance tests.
-- fixtures: offline documentation and harmless injection examples.
-- checks: public behavior checks; these contain no completed agent.
-- questionnaire.md: answer and submit this with your code and four-minute video.
+### 1. Diagnostics
 
-Create my-agent/student_agent.py or a student_agent package yourself. Keep it
-outside target-service. Use Python 3.10+, bash, Git, and local Ollama on macOS,
-Linux, or a preconfigured Windows WSL2 environment.
+``` 
+ python3 -m student_agent \
+  --root ../target-service \
+  --model qwen2.5-coder:7b \  
+  --mode read-only \
+  --offline \
+  --task "Inspect the order service and docs/business-rules.md. Read orders/pricing.py and the acceptance tests. Find the cause of the incorrect totals. Use the Decimal documentation to check rounding behavior. Explain the needed repair without changing any files."
+```
 
-Use `qwen2.5-coder:7b` as the recommended default. Use
-`qwen2.5-coder:3b` on a lower-memory machine, or optionally use
-`qwen2.5-coder:14b` when the machine has enough memory and slower responses are
-acceptable. Configure the choice with `--model` or `OLLAMA_MODEL`.
+### 2. Repairing Order service
 
-The baseline intentionally has five failing tests out of nine. The agent contract
-checks are separate and run against YOUR implementation. Do not confuse these
-expected business failures with a broken lab installation.
-
+```
+ python3 -m student_agent \              
+  --root ../target-service \
+  --model qwen2.5-coder:7b \
+  --mode edit \
+  --offline \
+  --task "Repair orders/pricing.py according to docs/business-rules.md. Read docs/supplier-note.md. Keep validation and acceptance tests unchanged.
+  Read each file before editing it. Add one useful regression test in tests/test_student.py. Request approval to run
+ python3 -m unittest discover -s tests -v. Summarize what changed and what you verified."
+```
